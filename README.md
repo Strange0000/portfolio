@@ -2,7 +2,7 @@
 
 A modern, highly interactive, and premium personal portfolio website designed to showcase my skills, projects, and journey as a Machine Learning Engineer and Software Developer.
 
-![Portfolio Preview](portfolio_prev.jpeg) <!-- You can replace this with an actual screenshot of the website later -->
+![Portfolio Preview](portfolio_prev.png) <!-- You can replace this with an actual screenshot of the website later -->
 
 ## ✨ Features
 
