@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initComments();
     initThemeToggle();
     initAdminMode();
+    initFloatingCode();
 });
 
 /* ================================================
@@ -472,7 +473,9 @@ function initSmoothScroll() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+                // Scroll exactly to the top of the section with 0 offset
+                const y = target.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({ top: y, behavior: 'smooth' });
             }
         });
     });
@@ -508,4 +511,62 @@ function initAdminMode() {
             card.appendChild(btn);
         }
     });
+}
+
+/* ================================================
+   FLOATING CODE BACKGROUND
+   ================================================ */
+function initFloatingCode() {
+    const container = document.getElementById('code-float-container');
+    if (!container) return;
+
+    const snippets = [
+        "const db = firebase.firestore();",
+        "import numpy as np",
+        "def train_model(epochs=100):",
+        "SELECT * FROM users WHERE active = 1",
+        "<div class=\"glass-panel\"></div>",
+        "model.fit(X_train, y_train)",
+        "git commit -m 'Initial commit'",
+        "console.log('Hello World');",
+        "let x = Math.random() * innerWidth;",
+        "cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)",
+        "DataFrame.dropna(inplace=True)"
+    ];
+
+    function createSnippet() {
+        const el = document.createElement('div');
+        el.className = 'floating-code';
+        el.innerText = snippets[Math.floor(Math.random() * snippets.length)];
+        
+        // Random horizontal position (5% to 85%)
+        el.style.left = (Math.random() * 80 + 5) + '%';
+        
+        // Random slight animation duration variance (15s to 25s)
+        const duration = Math.random() * 10 + 15;
+        el.style.animationDuration = duration + 's';
+        
+        // Random font size variation
+        const size = Math.random() * 0.4 + 0.6;
+        el.style.fontSize = size + 'rem';
+        
+        // Random opacity max (for subtlety)
+        const opacity = Math.random() * 0.15 + 0.05;
+        el.style.setProperty('--target-opacity', opacity);
+
+        container.appendChild(el);
+
+        // Remove after animation finishes
+        setTimeout(() => {
+            el.remove();
+        }, duration * 1000);
+    }
+
+    // Create a new snippet every 1.5 seconds
+    setInterval(createSnippet, 1500);
+    
+    // Create a few immediately
+    for(let i=0; i<6; i++) {
+        setTimeout(createSnippet, i * 400);
+    }
 }
