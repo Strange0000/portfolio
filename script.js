@@ -94,6 +94,8 @@ function initComments() {
     
     if (!form || !slider || typeof db === 'undefined') return;
 
+    let isInitialLoad = true;
+
     // Load comments in real-time from Firestore
     db.collection('comments').orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
         slider.innerHTML = '';
@@ -126,9 +128,11 @@ function initComments() {
         });
         
         // Auto scroll to the end when a new comment is added (if multiple exist)
-        if (slider.lastElementChild && snapshot.docChanges().some(change => change.type === 'added')) {
+        if (!isInitialLoad && slider.lastElementChild && snapshot.docChanges().some(change => change.type === 'added')) {
             slider.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' });
         }
+        
+        isInitialLoad = false;
     });
 
     form.addEventListener('submit', (e) => {
